@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; connect-src 'self' https://openrouter.ai https://generativelanguage.googleapis.com ws://127.0.0.1:* http://127.0.0.1:* http://localhost:* https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https:; worker-src 'self' blob:;" />
+    <title>Imhotep OS Design</title>
+    <meta name="description" content="A code editor inspired by VSCode with an ancient Egyptian theme, offering developers a unique and immersive coding experience." />
+    <meta name="robots" content="noindex, nofollow" />
+    <style>
+      html, body { height: 100%; margin: 0; background-color: #0d0e12; color: #cccccc; font-family: 'Outfit', 'Alexandria', 'IBM Plex Sans Arabic', system-ui, sans-serif; }
+      #root { height: 100%; }
+      #imhotep-splash {
+        position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+        background-color: #0d0e12; display: flex; flex-direction: column; align-items: center; justify-content: center;
+        z-index: 999999; transition: opacity 0.6s ease-out, visibility 0.6s ease-out;
+      }
+      .imhotep-splash-logo { width: 120px; height: 120px; margin-bottom: 30px; animation: pulse 2s infinite; }
+      .imhotep-splash-title { font-size: 28px; letter-spacing: 4px; font-weight: bold; text-transform: uppercase; background: linear-gradient(180deg, #d4af37 0%, #b89329 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+      .imhotep-splash-subtitle { font-size: 12px; letter-spacing: 6px; color: rgba(212,175,55,0.6); margin-top: 10px; }
+      .imhotep-splash-loader { width: 200px; height: 2px; background: rgba(212,175,55,0.1); margin-top: 40px; position: relative; overflow: hidden; }
+      .imhotep-splash-loader::after { content: ''; position: absolute; top: 0; left: 0; height: 100%; width: 50%; background: #d4af37; animation: slide 1.5s infinite ease-in-out; }
+      @keyframes pulse { 0% { transform: scale(0.95); opacity: 0.8; } 50% { transform: scale(1.05); opacity: 1; filter: drop-shadow(0 0 15px rgba(212,175,55,0.4)); } 100% { transform: scale(0.95); opacity: 0.8; } }
+      @keyframes slide { 0% { transform: translateX(-100%); } 100% { transform: translateX(200%); } }
+    </style>
+  </head>
+  <body>
+    <div id="imhotep-splash">
+      <!-- Official Cartouche logo (same paths as CartoucheLogo in App.tsx) -->
+      <svg class="imhotep-splash-logo" viewBox="0 0 280 300" fill="none">
+        <path fill="#D4AF37" d="M122.5 289.807C123.983 289.934 125.484 290 127 290H131.5V300H127C125.487 300 123.986 299.944 122.5 299.838V289.807ZM145.5 300H136.5V290H145.5V300ZM159.5 299.662C157.364 299.885 155.195 300 153 300H150.5V290H153C155.201 290 157.371 289.862 159.5 289.597V299.662ZM108.5 286.611C111.386 287.71 114.394 288.559 117.5 289.133V299.275C114.419 298.802 111.414 298.102 108.5 297.192V286.611ZM173.5 296.529C170.593 297.547 167.587 298.355 164.5 298.934V288.722C167.615 288.018 170.624 287.037 173.5 285.802V296.529ZM153.802 0.00488281C187.674 0.434151 215 28.026 215 62V238C215 263.152 200.023 284.806 178.5 294.53V283.328C194.318 274.41 205 257.453 205 238V62C205 33.2812 181.719 10 153 10H127C98.2812 10 75 33.2812 75 62V238C75 258.262 86.5891 275.816 103.5 284.398V295.391C80.911 286.131 65 263.924 65 238V62C65 28.026 92.3261 0.434149 126.198 0.00488281L127 0H153L153.802 0.00488281Z"/>
+        <circle cx="139.5" cy="84.5" r="48.5" fill="#D4AF37"/>
+        <path fill="#D4AF37" d="M193.627 248.75H85.373L92.4453 236.5H186.555L193.627 248.75ZM183.668 231.5H95.332L103.415 217.5H175.585L183.668 231.5ZM172.698 212.5H106.302L114.096 199H164.904L172.698 212.5ZM162.017 194H116.983L123.334 183H155.666L162.017 194ZM152.779 178H126.221L139.5 155L152.779 178Z"/>
+        <path fill="#D4AF37" d="M103.5 300H5C2.23858 300 0 297.761 0 295C0 292.239 2.23858 290 5 290H103.5V300ZM131.5 300H122.5V290H131.5V300ZM145.5 300H136.5V290H145.5V300ZM159.5 300H150.5V290H159.5V300ZM173.5 300H164.5V290H173.5V300ZM275 290C277.761 290 280 292.239 280 295C280 297.761 277.761 300 275 300H178.5V290H275ZM117.5 300H108.5V290H117.5V300Z"/>
+      </svg>
+      <div class="imhotep-splash-title">IMHOTEP OS</div>
+      <div class="imhotep-splash-subtitle">AI ENGINEERING STUDIO</div>
+      <div class="imhotep-splash-loader"></div>
+    </div>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+    <script>
+      window.addEventListener('load', () => {
+        setTimeout(() => {
+          const s = document.getElementById('imhotep-splash');
+          if (s) { s.style.opacity = '0'; s.style.visibility = 'hidden'; setTimeout(() => s.remove(), 600); }
+        }, 800);
+      });
+    </script>
+  </body>
+</html>
